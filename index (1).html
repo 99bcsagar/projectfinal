@@ -1,0 +1,139 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bengaluru Bakery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Bengaluru Bakery</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero text-center">
+        <div class="container">
+            <h1>Welcome to Bengaluru Bakery</h1>
+            <p>Fresh breads, pastries, and cakes baked daily.</p>
+            <a href="products.html" class="btn btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h2 class="text-center">Our Favorites</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Sourdough" class="card-img-top" alt="Sourdough Bread">
+                    <div class="card-body">
+                        <h5 class="card-title">Fresh Bread</h5>
+                        <p class="card-text">Sweet and Tasty. Rs 50 .</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Croissant" class="card-img-top" alt="Croissant">
+                    <div class="card-body">
+                        <h5 class="card-title">Butter Croissant</h5>
+                        <p class="card-text">Flaky and buttery. Rs 100.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200?text=Cake" class="card-img-top" alt="Custom Cake">
+                    <div class="card-body">
+                        <h5 class="card-title">Custom Cake</h5>
+                        <p class="card-text">For any occasion. From Rs 250.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials bg-light py-5">
+        <div class="container">
+            <h2 class="text-center">Happy Customers</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <blockquote class="blockquote">
+                        <p>“The best Cake I’ve ever had!”</p>
+                        <footer class="blockquote-footer">Raj.</footer>
+                    </blockquote>
+                </div>
+                <div class="col-md-6">
+                    <blockquote class="blockquote">
+                        <p>“Our wedding cake was perfect!”</p>
+                        <footer class="blockquote-footer"> Vishal and Priya </footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <p> BTM LAyout |  | info@Bengalurubakery.com</p>
+            <p>© 2025 Begaluru Bakery</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
