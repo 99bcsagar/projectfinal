@@ -1,0 +1,56 @@
+body {
+    font-family: 'Lora', serif;
+    color: #333;
+}
+
+.navbar {
+    background-color: #f8e1e1 !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #5c4033 !important;
+}
+
+.nav-link {
+    color: #5c4033 !important;
+}
+
+.hero {
+    background: url('https://via.placeholder.com/1200x400?text=Bakery+Hero') center/cover no-repeat;
+    padding: 80px 0;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+}
+
+.btn-primary {
+    background-color: #5c4033;
+    border-color: #5c4033;
+}
+
+.btn-primary:hover {
+    background-color: #4a3327;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.testimonials {
+    background-color: #f8e1e1;
+}
+
+footer {
+    background-color: #5c4033;
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+}
